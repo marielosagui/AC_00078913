@@ -1,5 +1,4 @@
  
-
     ;EJERCICIO 1
     ; Tomando como base los últimos 5 dígitos de su carnet,
     ;cada digito representa una de las notas de las evaluaciones que serán la nota del primer parcial
@@ -8,7 +7,7 @@
 
     ; carne 00078913 7+8+9+1+3 = 28/5 = 5.6 aproximando 6
                         
-    org   100h
+    org   100h 
 
         mov     ax, 0000h ; limpiando basura en ax
         add     ax, 7d
@@ -21,8 +20,6 @@
     
         cmp ax,6d
         je comentario
-
-    int 20h
 
 ; comentario segun nota:  peor es nada
 
@@ -54,4 +51,19 @@ comentario:     mov     cl, "P"
                 mov     cl, "a"
                 mov [20Bh], cl
 
+                int 20h
 
+;EJERCICIO 2
+;El presidente Bayib Nukele, de un país ficticio, necesita presentar datos de una proyección
+; de casos de la pandemia COVID-19, para lo cual su equipo de expertos ha encontrado la maravillosa 
+;y precisa formula precisa: “comenzando con dos casos el día uno, cada tres días se duplica el número”.
+;Usted es el encargado de las gráficas, tiene que dejar una buena impresión. De manera dinámica,
+;coloque 11 estimaciones partiendo del día 3, de tres en tres es decir primera celda día 3, segunda día 6,
+;y así; una estimación por cada una o dos celdas de memoria, desde la celda 210h llenando toda la fila,
+;cuando pase de 255 necesitará usar dos celdas de memoria para guardar el número.
+
+
+;EJERCICIO 3
+
+
+ 
