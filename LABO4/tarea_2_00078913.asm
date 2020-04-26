@@ -51,7 +51,6 @@ comentario:     mov     cl, "P"
                 mov     cl, "a"
                 mov [20Bh], cl
 
-                int 20h
 
 ;EJERCICIO 2
 ;El presidente Bayib Nukele, de un país ficticio, necesita presentar datos de una proyección
@@ -62,6 +61,24 @@ comentario:     mov     cl, "P"
 ;y así; una estimación por cada una o dos celdas de memoria, desde la celda 210h llenando toda la fila,
 ;cuando pase de 255 necesitará usar dos celdas de memoria para guardar el número.
 
+
+    mov	cx, 0000h
+	mov	di, 0d
+	mov	bx, 2d
+	mov	ax, 2d
+	mov	cl, 0Bh
+
+e: mul	bx
+            cmp	ax, 0100h
+            jbe	loop2
+            inc	di
+
+loop2:	mov	[di+210h], ax
+            inc	di
+            loop e
+
+
+    int 20h
 
 ;EJERCICIO 3
 
