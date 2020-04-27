@@ -78,9 +78,36 @@ loop2:	mov	[di+210h], ax
             loop e
 
 
-    int 20h
 
 ;EJERCICIO 3
+;Escriba de manera dinámica los primeros 16 números de la sucesión de Fibonacci,
+;cada uno en una o dos celda de memoria, desde la celda 220h llenando toda la fila,
+;cuando pase de 255 necesitará usar dos celdas de memoria para guardar el número
 
 
- 
+    mov	ax, 0d 
+    mov	bx, 1d
+    mov	cx, 0d
+    mov	si, 0h
+    mov	[si + 220h], ax
+
+fibo:   inc si
+        mov	cx, ax
+        add	ax,bx
+        mov	[si + 220h], ax
+        mov bx,cx
+        cmp	ax, 233d
+        jb	fibo
+    
+fibo2:  inc si
+        mov	cx, ax
+        add	ax,bx
+        mov	[si + 220h], al
+        inc si
+        mov	[si + 220h], ah
+        mov bx,cx
+        cmp	si, 10h
+        jb fibo2
+
+
+    int	20h
