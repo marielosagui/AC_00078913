@@ -18,6 +18,12 @@
         mov     cl, 5d
         div     cl
     
+
+
+
+
+
+    ;-------------------------
         cmp ax,6d
         je comentario
 
@@ -68,10 +74,10 @@ comentario:     mov     cl, "P"
 	mov	ax, 2d
 	mov	cl, 0Bh
 
-e: mul	bx
-            cmp	ax, 0100h
-            jbe	loop2
-            inc	di
+e:  mul	bx
+    cmp	ax, 0100h
+    jbe	loop2
+    inc	di
 
 loop2:	mov	[di+210h], ax
             inc	di
@@ -84,30 +90,33 @@ loop2:	mov	[di+210h], ax
 ;cada uno en una o dos celda de memoria, desde la celda 220h llenando toda la fila,
 ;cuando pase de 255 necesitará usar dos celdas de memoria para guardar el número
 
+    mov	bx, 0d	;Formula  F[n-2]
+	mov	dx, 1d 	;Formula  F[n-1]
+	mov	cx, 13 	
+	mov	di, 2d 	
 
-    mov	ax, 0d 
-    mov	bx, 1d
-    mov	cx, 0d
-    mov	si, 0h
-    mov	[si + 220h], ax
+	mov	[220h], bl
+	mov	[221h], dl
 
-fibo:   inc si
-        mov	cx, ax
-        add	ax,bx
-        mov	[si + 220h], ax
-        mov bx,cx
-        cmp	ax, 233d
-        jb	fibo
-    
-fibo2:  inc si
-        mov	cx, ax
-        add	ax,bx
-        mov	[si + 220h], al
-        inc si
-        mov	[si + 220h], ah
-        mov bx,cx
-        cmp	si, 10h
-        jb fibo2
+fibo:mov ax, bx
+	 add ax, dx
+	 mov bx, dx
+	 mov dx, ax
+	 cmp ax, 255d
+	 ja	 salto
+
+	;menores a 255d
+	mov	[220h+di], ax
+	inc	di
+	loop 	fibo
+
+	;mayores a 255d
+salto:	mov	[220h+di], al
+	inc 	di
+	mov	[220h+di], ah
+	inc 	di
+	loop 	fibo
+
 
 
     int	20h
