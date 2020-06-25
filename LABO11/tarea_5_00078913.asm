@@ -52,10 +52,30 @@ mov si, 175d ; X -> Columna  ; 135 original
 mov di, 180d ; Y -> Fila
 call 	linea_h2
 
+;; diagonales;;
+; diagonal izquierda
+mov si, 65d ; X -> Columna ; 185 original
+mov di, 50d ; Y -> Fila
+call linea_di
 
-	call 	kb		; Utilizamos espera de alguna tecla
+;diagonal derecha
+mov si, 175d ; X -> Columna
+mov di, 50d ; Y -> Fila
+call linea_dd  
 
-	int 	20h
+
+; diagonal interior  izquierda
+mov si, 65d ; X -> Columna ; 185 original
+mov di, 115d ; Y -> Fila
+call linea_di2
+
+;diagonal interior  derecha
+mov si, 175d ; X -> Columna
+mov di, 115d ; Y -> Fila
+call linea_dd2
+
+call 	kb		; Utilizamos espera de alguna tecla
+int 	20h
 
 grafico:mov	ah, 00h
 	mov	al, 13h
@@ -63,7 +83,7 @@ grafico:mov	ah, 00h
 	ret
 
 pixel:	mov	ah, 0Ch
-	mov	al, 1010b
+	mov	al, 0011b ; color CIAN
 	int 	10h
 	ret
 
@@ -100,17 +120,74 @@ lupi_v:	mov 	cx, si ; Columna
 		ret
 
 linea_vp:
-lupi_vp:	mov 	cx, si ; Columna 
+lupi_vp:mov cx, si ; Columna 
+		mov	dx, 0d ; Fila
+		add 	dx, di
+		call 	pixel
+		inc 	di
+		cmp 	di, 180d
+		jne 	lupi_vp
+		ret
+
+;; diagonales externas
+linea_di:
+lupi_di:mov cx, si ; Columna 
+	mov	dx, 0d ; Fila
+	add dx, di
+	call pixel
+	inc di
+    inc	si
+	cmp 	di, 70d  
+	jne 	validadi
+validadi:	cmp	si,120d 
+	jne 	lupi_di	
+	ret
+
+linea_dd:
+lupi_dd:mov cx, si ; Columna 
+		mov	dx, 0d ; Fila
+		add dx, di
+		call pixel
+		inc di
+    	dec	si
+		cmp di, 70d  
+		jne valig
+
+valig:cmp	si,120d  
+	jne 	lupi_dd	
+	ret
+
+; diagonales internas 
+linea_di2:  ;linea_adg2:
+lupi_di2:mov cx, si ; Columna 
+		mov	dx, 0d ; Fila
+		add dx, di
+		call pixel
+		inc di
+    	inc	si
+		cmp di, 70d  
+		jne validadi2
+validadi2:cmp	si,120d 
+		jne 	lupi_di2	
+		ret
+
+linea_dd2:   ;aig2
+lupi_dd2:	mov 	cx, si ; Columna 
 	mov	dx, 0d ; Fila
 	add 	dx, di
 	call 	pixel
 	inc 	di
-	cmp 	di, 180d
-	jne 	lupi_vp
-	ret
+    dec		si
+	cmp 	di, 70d  
+	jne 	validd2
 
-kb: 	mov	ah, 00h
-	int 	16h
+validd2:cmp	si,120d  
+		jne lupi_dd2	
+		ret
+
+
+kb: mov	ah, 00h
+	int 16h
 	ret
 
 section .data
