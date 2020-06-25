@@ -27,6 +27,32 @@ section .text
 	mov di, 50d ; Y -> Fila
 	call 	linea_v
 
+
+; segunda linea vertical izq
+mov	si, 65d ; X -> Columna
+mov di, 115d ; Y -> Fila
+call 	linea_vp
+
+
+; segunda linea vertical der
+mov	si, 175d ; X -> Columna
+mov di, 115d ; Y -> Fila
+call 	linea_vp
+
+
+
+; fila horizontal lado izquierda abajo
+mov si, 25d ; X -> Columna  ; 135 original
+mov di, 180d ; Y -> Fila
+call 	linea_h
+
+
+; fila horizontal lado derecha abajo
+mov si, 175d ; X -> Columna  ; 135 original
+mov di, 180d ; Y -> Fila
+call 	linea_h2
+
+
 	call 	kb		; Utilizamos espera de alguna tecla
 
 	int 	20h
@@ -73,6 +99,15 @@ lupi_v:	mov 	cx, si ; Columna
 		jne 	lupi_v
 		ret
 
+linea_vp:
+lupi_vp:	mov 	cx, si ; Columna 
+	mov	dx, 0d ; Fila
+	add 	dx, di
+	call 	pixel
+	inc 	di
+	cmp 	di, 180d
+	jne 	lupi_vp
+	ret
 
 kb: 	mov	ah, 00h
 	int 	16h
