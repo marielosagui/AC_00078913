@@ -7,20 +7,24 @@ section .text
 	xor 	si, si
 	xor 	di, di
 
+;fila horizontal lado izquierdo
 	mov 	si, 25d ; X -> Columna
-	mov 	di, 25d ; Y -> Fila
+	mov 	di, 50d ; Y -> Fila
 	call 	linea_h
 
-	mov 	si, 25d ; X -> Columna
-	mov 	di, 75d ; Y -> Fila
-	call 	linea_h
+;fila horizontal lado derecho
+	mov 	si, 175d ; X -> Columna
+	mov 	di, 50d ; Y -> Fila
+	call 	linea_h2
 
+;linea vertical derecho
+	mov	si, 215d ; X -> Columna
+	mov di, 50d ; Y -> Fila
+	call linea_v
+
+;linea vertical izquierdo
 	mov	si, 25d ; X -> Columna
-	mov 	di, 25d ; Y -> Fila
-	call 	linea_v
-
-	mov	si, 75d ; X -> Columna
-	mov 	di, 25d ; Y -> Fila
+	mov di, 50d ; Y -> Fila
 	call 	linea_v
 
 	call 	kb		; Utilizamos espera de alguna tecla
@@ -38,24 +42,36 @@ pixel:	mov	ah, 0Ch
 	ret
 
 linea_h: 
-lupi_h:	mov 	cx, 0d ; Columna 
+lupi_h:	mov cx, 0d ; Columna 
+		add 	cx, si
+		mov	dx, di ; Fila
+		call 	pixel
+		inc 	si
+		cmp 	si, 65d
+		jne 	lupi_h
+		ret
+
+linea_h2: 
+lupi_h2:mov 	cx, 0d ; Columna 
 	add 	cx, si
 	mov	dx, di ; Fila
 	call 	pixel
 	inc 	si
-	cmp 	si, 75d
-	jne 	lupi_h
+	cmp 	si, 215d
+	jne 	lupi_h2
 	ret
+
+
 
 linea_v:
 lupi_v:	mov 	cx, si ; Columna 
-	mov	dx, 0d ; Fila
-	add 	dx, di
-	call 	pixel
-	inc 	di
-	cmp 	di, 75d
-	jne 	lupi_v
-	ret
+		mov		dx, 0d ; Fila
+		add 	dx, di
+		call 	pixel
+		inc 	di
+		cmp 	di, 180d
+		jne 	lupi_v
+		ret
 
 
 kb: 	mov	ah, 00h
